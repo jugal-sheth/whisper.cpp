@@ -44,7 +44,7 @@ if (EMSCRIPTEN)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s TOTAL_STACK=5242880")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -s TOTAL_STACK=5242880")
 
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-gpu-targets") # modified flag to avoid deprecated GPU targets warnings
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated")
 else()
     if (MINGW)
         set(BUILD_SHARED_LIBS_DEFAULT OFF)
@@ -118,6 +118,11 @@ whisper_option_depr(WARNING     WHISPER_RPC                 GGML_RPC)
 whisper_option_depr(WARNING     WHISPER_SYCL                GGML_SYCL)
 whisper_option_depr(WARNING     WHISPER_SYCL_F16            GGML_SYCL_F16)
 whisper_option_depr(WARNING     WHISPER_CCACHE              GGML_CCACHE)
+
+if (GGML_CUDA)
+    #GGML_CUDA enabled, add the necessary compile options -Wno-deprecated-gpu-targets
+    add_compile_options(-Wno-deprecated-gpu-targets)
+endif()
 
 #
 # build the library
